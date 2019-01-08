@@ -19,7 +19,7 @@ os:
 
 install:
   - python -m pip install --user .
-  - cipi
+  - python -m cipi
   - source cipi.sh
   - pip install tox-travis tox
 
