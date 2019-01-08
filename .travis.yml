@@ -18,7 +18,7 @@ os:
   - windows
 
 install:
-  - python -m pip install --user .
+  - python setup.py install --user .
   - python -m cipi
   - source cipi.sh
   - pip install tox-travis tox
