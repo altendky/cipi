@@ -3,8 +3,6 @@ language: c
 dist: xenial
 
 env:
-  global:
-    - PYTHONPATH=env
   matrix:
     - PYTHON=2.7.15
     - PYTHON=3.4.4
@@ -20,9 +18,12 @@ os:
   - windows
 
 install:
-  - python -m pip install --target env --upgrade pip==19.0.1 setuptools==40.6.3
-  - python -m pip install --target env .
-  - python -m cipi
+  - git clone https://github.com/pypa/virtualenv
+  - git -C virtualenv checkout 16.3.0
+  - python virtualenv/virtualenv.py venv
+  - venv/bin/python -m pip install --upgrade pip==19.0.1 setuptools==40.6.3
+  - venv/bin/python -m pip install .
+  - venv/bin/python -m cipi
   - source cipi.sh
   - pip install tox-travis tox
 
