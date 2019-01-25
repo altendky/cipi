@@ -20,7 +20,7 @@ os:
   - windows
 
 install:
-  - python -m pip install --target env
+  - python -m pip install --target env .
   - python -m cipi
   - source cipi.sh
   - pip install tox-travis tox
