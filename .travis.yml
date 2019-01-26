@@ -4,7 +4,7 @@ dist: xenial
 
 env:
   global:
-    PYTHONPATH=pip/src/
+    PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
   matrix:
     - PYTHON=2.7.15
     - PYTHON=3.4.4
