@@ -4,6 +4,9 @@ import posixpath
 import subprocess
 import sys
 import textwrap
+import time
+
+import requests
 
 
 logger = logging.getLogger(__name__)
@@ -45,15 +48,38 @@ def check_call(args, *pargs, **kwargs):
         logger.info(line)
 
 
+def request(*args, **kwargs):
+    print('Downloading: {} {}'.format(args, kwargs))
+
+    hold_off = 30
+
+    for remaining_tries in reversed(range(5)):
+        result = requests.get(*args, **kwargs)
+        try:
+            result.raise_for_status()
+        except requests.HTTPError:
+            if remaining_tries > 0:
+                print('waiting {} seconds'.format(hold_off))
+                time.sleep(hold_off)
+                hold_off *= 2
+                print('Retrying: {} {}'.format(args, kwargs))
+
+                continue
+
+            raise
+
+        return result
+
+
+def download(result, path):
+    with open(path, 'wb') as f:
+        for chunk in result.iter_content(chunk_size=1024):
+            if chunk:  # filter out keep-alive new chunks
+                f.write(chunk)
+
+
 def get_url(url, path):
-    check_call(
-        [
-            'curl',
-            '-L',
-            '-o', path,
-            url,
-        ],
-    )
+    download(request(url, stream=True), path)
 
 
 def python_name_from_version(version):

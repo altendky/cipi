@@ -25,7 +25,7 @@ install:
   - python buildpyz.py
   - python cipi.pyz
   - source cipi.sh
-  - pip install tox-travis tox
+  - python -m pip install tox-travis tox
 
 script:
   - tox
