@@ -3,6 +3,8 @@ language: c
 dist: xenial
 
 env:
+  global:
+    PYTHONPATH=pip/src/
   matrix:
     - PYTHON=2.7.15
     - PYTHON=3.4.4
@@ -18,6 +20,8 @@ os:
   - windows
 
 install:
+  - git clone https://github.com/pypa/pip
+  - git -C pip checkout 19.0.1
   - python buildpyz.py
   - python cipi.pyz
   - source cipi.sh
