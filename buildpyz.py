@@ -7,6 +7,15 @@ import tempfile
 import zipfile
 
 
+def check_call(command, *args, **kwargs):
+    command = list(command)
+    print('Launching: ')
+    for arg in command:
+        print('    {}'.format(arg))
+
+    return subprocess.check_call(command, *args, **kwargs)
+
+
 def build(artifact, script, root):
     temporary_path = tempfile.mkdtemp()
 
@@ -21,7 +30,7 @@ def build(artifact, script, root):
             ('--requirement', os.path.join(root, 'requirements.txt')),
         )
         for target in to_install:
-            subprocess.check_call(
+            check_call(
                 (
                     sys.executable,
                     '-m', 'pip',
@@ -32,7 +41,7 @@ def build(artifact, script, root):
                 cwd=build_path,
             )
 
-        subprocess.check_call(
+        check_call(
             (
                 sys.executable,
                 os.path.join(root, 'setup.py'),
@@ -42,17 +51,22 @@ def build(artifact, script, root):
             cwd=root,
         )
 
+        extras = ()
+
+        if sys.platform.startswith('darwin'):
+            extras += ('--prefix', '')
+
         to_install = [
             os.path.join(destination_path, name)
             for name in os.listdir(destination_path)
         ]
-        subprocess.check_call(
+        check_call(
             (
                 sys.executable,
                 '-m', 'pip',
                 'install',
                 '--target', build_path,
-            ) + tuple(p for p in to_install),
+            ) + extras + tuple(p for p in to_install),
             cwd=build_path,
         )
 
