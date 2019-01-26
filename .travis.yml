@@ -18,13 +18,8 @@ os:
   - windows
 
 install:
-  - python -c 'import sys; print(sys.version); print(sys.executable); print(sys.prefix)'
-  - git clone https://github.com/pypa/virtualenv
-  - git -C virtualenv checkout 16.3.0
-  - python virtualenv/virtualenv.py venv
-  - venv/bin/python -m pip install --upgrade pip==19.0.1 setuptools==40.6.3
-  - venv/bin/python -m pip install .
-  - venv/bin/python -m cipi
+  - python buildpyz.py
+  - python cipi.pyz
   - source cipi.sh
   - pip install tox-travis tox
 
