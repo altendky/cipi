@@ -54,7 +54,7 @@ def build(artifact, script, root):
         extras = ()
 
         if sys.platform.startswith('darwin'):
-            extras += ('--system',)
+            extras += ('--prefix', '')
 
         to_install = [
             os.path.join(destination_path, name)
