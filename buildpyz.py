@@ -53,9 +53,6 @@ def build(artifact, script, root):
 
         extras = ()
 
-        if sys.platform.startswith('darwin'):
-            extras += ('--prefix', '')
-
         to_install = [
             os.path.join(destination_path, name)
             for name in os.listdir(destination_path)
@@ -66,7 +63,7 @@ def build(artifact, script, root):
                 '-m', 'pip',
                 'install',
                 '--target', build_path,
-            ) + extras + tuple(p for p in to_install),
+            ) + tuple(p for p in to_install),
             cwd=build_path,
         )
 
