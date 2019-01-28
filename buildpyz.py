@@ -51,8 +51,6 @@ def build(artifact, script, root):
             cwd=root,
         )
 
-        extras = ()
-
         to_install = [
             os.path.join(destination_path, name)
             for name in os.listdir(destination_path)
