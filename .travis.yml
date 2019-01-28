@@ -22,6 +22,7 @@ os:
 install:
   - git clone https://github.com/pypa/pip
   - git -C pip checkout 19.0.1
+  - python -m pip --version
   - python buildpyz.py
   - python cipi.pyz
   - source cipi.sh
