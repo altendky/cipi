@@ -23,6 +23,14 @@ def build(artifact, script, root):
         build_path = os.path.join(temporary_path, 'build')
         os.mkdir(build_path)
 
+        if sys.platfomr.startswith('darwin'):
+            pydistutils_cfg = os.path.expanduser(
+                os.path.join('~', '.pydistutils.cfg'),
+            )
+            with open(pydistutils_cfg, 'w') as f:
+                f.write('[install]\n')
+                f.write('prefix=\n')
+
         destination_path = os.path.join(temporary_path, 'destination')
         os.mkdir(destination_path)
 
