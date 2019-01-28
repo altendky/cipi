@@ -1,21 +1,21 @@
-language: c
-
 dist: xenial
 
 jobs:
   include:
     - stage: "pyz"
       name: "Build PYZ"
+      language: python
+      python: 3.7
+      os: linux
       env:
         global:
           PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
-      os:
-        - linux
-      install:
+      script:
         - python buildpyz.py
 
     - stage: "test"
       name: "Test"
+      language: c
       env:
         matrix:
           - PYTHON=2.7.15
