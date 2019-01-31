@@ -1,5 +1,33 @@
 dist: xenial
 
+language: c
+
+env:
+  matrix:
+    - PYTHON=2.7.15
+    - PYTHON=3.4.4
+    - PYTHON=3.5.4
+    - PYTHON=3.6.8
+    - PYTHON=3.7.2
+    - PYTHON=pypy2.7-6.0.0
+    - PYTHON=pypy3.5-6.0.0
+
+os:
+  - linux
+  - osx
+  - windows
+
+install:
+  - python cipi.pyz
+  - source cipi.sh
+  - python -m pip install tox-travis tox
+
+script:
+  - tox
+
+after_success:
+  - tox -e codecov
+
 jobs:
   include:
     - stage: "pyz"
@@ -12,31 +40,6 @@ jobs:
           PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
       script:
         - python buildpyz.py
-
-    - stage: "test"
-      name: "Test"
-      language: c
-      env:
-        matrix:
-          - PYTHON=2.7.15
-          - PYTHON=3.4.4
-          - PYTHON=3.5.4
-          - PYTHON=3.6.8
-          - PYTHON=3.7.2
-          - PYTHON=pypy2.7-6.0.0
-          - PYTHON=pypy3.5-6.0.0
-      os:
-        - linux
-        - osx
-        - windows
-      install:
-        - python cipi.pyz
-        - source cipi.sh
-        - python -m pip install tox-travis tox
-      script:
-        - tox
-      after_success:
-        - tox -e codecov
 
 stages:
   - pyz
