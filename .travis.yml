@@ -31,10 +31,14 @@ script:
 after_success:
   - tox -e codecov
 
+cache:
+  directories:
+  - cache
+
 jobs:
   include:
-    - stage: "pyz"
-      name: "Build PYZ"
+    - stage: pyz
+      name: Build PYZ
       language: python
       python: 3.7
       os: linux
@@ -42,9 +46,6 @@ jobs:
         global:
           - PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
           - CACHE_NAME=PYZ
-      cache:
-        directories:
-        - cache
       install:
         - echo hi
       script:
@@ -53,11 +54,8 @@ jobs:
       after_success:
         - echo hi
 
-    - stage: "test"
-      name: "Test"
-      cache:
-        directories:
-        - cache
+    - stage: test
+      name: Test
 
 stages:
   - pyz
