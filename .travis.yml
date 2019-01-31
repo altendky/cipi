@@ -3,6 +3,8 @@ dist: xenial
 language: c
 
 env:
+  global:
+    - CACHE_NAME=PYZ
   matrix:
     - PYTHON=2.7.15
     - PYTHON=3.4.4
@@ -26,13 +28,22 @@ jobs:
       os: linux
       env:
         global:
-          PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
+          - PYTHONPATH=$TRAVIS_BUILD_DIR/pip/src/
+          - CACHE_NAME=PYZ
+      cache:
+        directories:
+        - cache
       script:
         - python buildpyz.py
+        - cp cipi.pyz cache
 
     - stage: "test"
       name: "Test"
+      cache:
+        directories:
+        - cache
       install:
+        - cp cache/cipi.pyz .
         - python cipi.pyz
         - source cipi.sh
         - python -m pip install tox-travis tox
