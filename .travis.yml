@@ -19,6 +19,18 @@ os:
   - osx
   - windows
 
+install:
+  - cp cache/cipi.pyz .
+  - python cipi.pyz
+  - source cipi.sh
+  - python -m pip install tox-travis tox
+
+script:
+  - tox
+
+after_success:
+  - tox -e codecov
+
 jobs:
   include:
     - stage: "pyz"
@@ -42,15 +54,6 @@ jobs:
       cache:
         directories:
         - cache
-      install:
-        - cp cache/cipi.pyz .
-        - python cipi.pyz
-        - source cipi.sh
-        - python -m pip install tox-travis tox
-      script:
-        - tox
-      after_success:
-        - tox -e codecov
 
 stages:
   - pyz
