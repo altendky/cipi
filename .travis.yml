@@ -45,9 +45,13 @@ jobs:
       cache:
         directories:
         - cache
+      install:
+        - echo hi
       script:
         - python buildpyz.py
         - cp cipi.pyz cache
+      after_success:
+        - echo hi
 
     - stage: "test"
       name: "Test"
